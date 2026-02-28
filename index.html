@@ -456,10 +456,10 @@
 
     .swipe-stage {
       position: relative;
-      width: 400px;
+      width: 420px;
       max-width: 92vw;
-      height: 600px;
-      max-height: 72vh;
+      height: 70vh;
+      max-height: 700px;
       perspective: 1000px;
     }
 
@@ -469,13 +469,12 @@
       background: var(--card-bg);
       border-radius: 20px;
       overflow: hidden;
+      overflow-y: auto;
       border: 2px solid var(--border);
-      display: flex;
-      flex-direction: column;
       cursor: grab;
       transition: transform 0.4s cubic-bezier(.22,.68,0,1.1), opacity 0.4s;
       will-change: transform;
-      touch-action: none;
+      touch-action: pan-y;
     }
     .swipe-card.dragging {
       transition: none;
@@ -492,28 +491,20 @@
 
     .swipe-card-img {
       width: 100%;
-      height: 40%;
-      min-height: 160px;
-      object-fit: cover;
+      display: block;
       background: #111;
-      flex-shrink: 0;
     }
     .swipe-card-placeholder {
       width: 100%;
-      height: 40%;
-      min-height: 160px;
+      aspect-ratio: 1;
       background: linear-gradient(135deg, var(--accent2), var(--accent3));
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 4rem;
-      flex-shrink: 0;
     }
     .swipe-card-body {
       padding: 1rem 1.2rem;
-      flex: 1;
-      overflow-y: auto;
-      min-height: 0;
     }
     .swipe-card-type {
       font-size: 0.7rem;
@@ -1035,13 +1026,34 @@ function swipeUndo() {
 }
 
 function setupSwipeDrag(card) {
-  let startX = 0, currentX = 0, dragging = false;
+  let startX = 0, startY = 0, currentX = 0, dragging = false, decided = false;
 
-  const onStart = (x) => { startX = x; currentX = x; dragging = true; card.classList.add('dragging'); };
-  const onMove = (x) => {
+  const onStart = (x, y) => {
+    startX = x; startY = y; currentX = x;
+    dragging = false; decided = false;
+  };
+
+  const onMove = (x, y) => {
+    if (decided && !dragging) return; // vertical scroll won
+    const dx = x - startX;
+    const dy = y - startY;
+
+    if (!decided) {
+      // Need at least 8px of movement to decide direction
+      if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+      decided = true;
+      if (Math.abs(dy) > Math.abs(dx)) {
+        // Vertical wins — let the card scroll naturally
+        dragging = false;
+        return;
+      }
+      // Horizontal wins — start swipe drag
+      dragging = true;
+      card.classList.add('dragging');
+    }
+
     if (!dragging) return;
     currentX = x;
-    const dx = currentX - startX;
     card.style.transform = `translateX(${dx}px) rotate(${dx * 0.08}deg)`;
     const likeS = card.querySelector('.swipe-stamp.like');
     const nopeS = card.querySelector('.swipe-stamp.nope');
@@ -1049,6 +1061,7 @@ function setupSwipeDrag(card) {
     else if (dx < -50) { nopeS.style.opacity = Math.min((-dx - 50) / 80, 1); likeS.style.opacity = 0; }
     else { likeS.style.opacity = 0; nopeS.style.opacity = 0; }
   };
+
   const onEnd = () => {
     if (!dragging) return;
     dragging = false;
@@ -1063,11 +1076,11 @@ function setupSwipeDrag(card) {
     }
   };
 
-  card.addEventListener('mousedown', (e) => { e.preventDefault(); onStart(e.clientX); });
-  document.addEventListener('mousemove', (e) => onMove(e.clientX));
+  card.addEventListener('mousedown', (e) => { onStart(e.clientX, e.clientY); });
+  document.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY));
   document.addEventListener('mouseup', onEnd);
-  card.addEventListener('touchstart', (e) => onStart(e.touches[0].clientX), { passive: true });
-  card.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX), { passive: true });
+  card.addEventListener('touchstart', (e) => onStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  card.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
   card.addEventListener('touchend', onEnd);
 }
 
