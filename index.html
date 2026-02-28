@@ -16,6 +16,8 @@
       --accent: #e94560;
       --accent2: #0f3460;
       --accent3: #533483;
+      --green: #2ecc71;
+      --red: #e74c3c;
       --text: #eee;
       --text-dim: #999;
       --border: #2a2a4a;
@@ -63,9 +65,7 @@
       position: relative;
       flex-wrap: wrap;
     }
-    .stat {
-      text-align: center;
-    }
+    .stat { text-align: center; }
     .stat-num {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 2rem;
@@ -91,7 +91,7 @@
       background: var(--bg);
       border-bottom: 1px solid var(--border);
     }
-    .filter-btn {
+    .filter-btn, .mode-btn {
       background: var(--card-bg);
       color: var(--text-dim);
       border: 1px solid var(--border);
@@ -103,7 +103,7 @@
       transition: all 0.2s;
       white-space: nowrap;
     }
-    .filter-btn:hover {
+    .filter-btn:hover, .mode-btn:hover {
       border-color: var(--accent);
       color: var(--text);
     }
@@ -116,6 +116,15 @@
       font-size: 0.75rem;
       opacity: 0.7;
       margin-left: 4px;
+    }
+    .mode-btn {
+      background: var(--accent3);
+      color: white;
+      border-color: var(--accent3);
+    }
+    .mode-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
     }
 
     /* ---- SEARCH ---- */
@@ -138,12 +147,8 @@
       outline: none;
       transition: border-color 0.2s;
     }
-    .search-wrap input:focus {
-      border-color: var(--accent);
-    }
-    .search-wrap input::placeholder {
-      color: var(--text-dim);
-    }
+    .search-wrap input:focus { border-color: var(--accent); }
+    .search-wrap input::placeholder { color: var(--text-dim); }
 
     /* ---- GRID ---- */
     .grid {
@@ -239,7 +244,7 @@
       font-size: 0.7rem;
     }
 
-    /* ---- MODAL ---- */
+    /* ---- MODAL (click-to-view) ---- */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -250,9 +255,7 @@
       justify-content: center;
       padding: 2rem;
     }
-    .modal-overlay.open {
-      display: flex;
-    }
+    .modal-overlay.open { display: flex; }
     .modal {
       background: var(--card-bg);
       border-radius: 16px;
@@ -277,9 +280,7 @@
       border-radius: 16px 16px 0 0;
       background: #111;
     }
-    .modal-body {
-      padding: 1.5rem;
-    }
+    .modal-body { padding: 1.5rem; }
     .modal-type {
       font-size: 0.75rem;
       text-transform: uppercase;
@@ -307,7 +308,7 @@
       font-size: 0.8rem;
       color: var(--text-dim);
     }
-    .modal-close {
+    .modal-close, .slideshow-close, .swipe-close {
       position: absolute;
       top: 1rem;
       right: 1rem;
@@ -324,6 +325,9 @@
       align-items: center;
       justify-content: center;
     }
+    .modal-close:hover, .slideshow-close:hover, .swipe-close:hover {
+      background: var(--accent);
+    }
     .modal-link {
       display: inline-block;
       margin-top: 0.8rem;
@@ -333,6 +337,313 @@
     }
     .modal-link:hover { text-decoration: underline; }
 
+    /* ---- SLIDESHOW MODE ---- */
+    .slideshow-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 2000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    .slideshow-overlay.open { display: flex; }
+
+    .slideshow-counter {
+      position: absolute;
+      top: 1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      color: var(--text-dim);
+      z-index: 2002;
+    }
+
+    .slideshow-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slideshow-img-wrap {
+      max-width: 85vw;
+      max-height: 65vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slideshow-img-wrap img {
+      max-width: 100%;
+      max-height: 65vh;
+      object-fit: contain;
+      border-radius: 8px;
+      transition: opacity 0.15s;
+    }
+    .slideshow-img-wrap .slide-placeholder {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent3));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+    }
+
+    .slideshow-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: none;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 2001;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .slideshow-arrow:hover { background: var(--accent); }
+    .slideshow-arrow.left { left: 1.5rem; }
+    .slideshow-arrow.right { right: 1.5rem; }
+
+    .slideshow-info {
+      width: 100%;
+      max-width: 700px;
+      padding: 1rem 2rem 2rem;
+      text-align: center;
+    }
+    .slideshow-info .si-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .slideshow-info .si-desc {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-top: 0.4rem;
+      max-height: 3.5em;
+      overflow: hidden;
+    }
+    .slideshow-info .si-partner {
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+    }
+
+    /* Progress bar */
+    .slideshow-progress {
+      width: 100%;
+      height: 3px;
+      background: var(--border);
+      position: absolute;
+      bottom: 0;
+    }
+    .slideshow-progress-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.2s;
+    }
+
+    /* ---- SWIPE MODE (Dating Profiles) ---- */
+    .swipe-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 2000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .swipe-overlay.open { display: flex; }
+
+    .swipe-counter {
+      position: absolute;
+      top: 1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      color: var(--text-dim);
+      z-index: 2002;
+    }
+
+    .swipe-stage {
+      position: relative;
+      width: 380px;
+      max-width: 90vw;
+      height: 540px;
+      max-height: 70vh;
+      perspective: 1000px;
+    }
+
+    .swipe-card {
+      position: absolute;
+      inset: 0;
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      cursor: grab;
+      transition: transform 0.4s cubic-bezier(.22,.68,0,1.1), opacity 0.4s;
+      will-change: transform;
+      touch-action: none;
+    }
+    .swipe-card.dragging {
+      transition: none;
+      cursor: grabbing;
+    }
+    .swipe-card.exit-left {
+      transform: translateX(-150%) rotate(-30deg) !important;
+      opacity: 0;
+    }
+    .swipe-card.exit-right {
+      transform: translateX(150%) rotate(30deg) !important;
+      opacity: 0;
+    }
+
+    .swipe-card-img {
+      width: 100%;
+      height: 55%;
+      object-fit: cover;
+      background: #111;
+    }
+    .swipe-card-placeholder {
+      width: 100%;
+      height: 55%;
+      background: linear-gradient(135deg, var(--accent2), var(--accent3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+    }
+    .swipe-card-body {
+      padding: 1rem 1.2rem;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .swipe-card-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .swipe-card-partner {
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-top: 0.2rem;
+    }
+    .swipe-card-desc {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+      margin-top: 0.5rem;
+    }
+
+    /* Swipe stamp overlays */
+    .swipe-stamp {
+      position: absolute;
+      top: 2rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3rem;
+      font-weight: 700;
+      padding: 0.3rem 1rem;
+      border-radius: 8px;
+      border: 4px solid;
+      transform: rotate(-15deg);
+      opacity: 0;
+      transition: opacity 0.15s;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .swipe-stamp.like {
+      right: 1.5rem;
+      color: var(--green);
+      border-color: var(--green);
+      transform: rotate(15deg);
+    }
+    .swipe-stamp.nope {
+      left: 1.5rem;
+      color: var(--red);
+      border-color: var(--red);
+      transform: rotate(-15deg);
+    }
+
+    .swipe-buttons {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .swipe-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid;
+      background: transparent;
+      font-size: 1.6rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .swipe-btn:active { transform: scale(0.9); }
+    .swipe-btn.nope-btn {
+      border-color: var(--red);
+      color: var(--red);
+    }
+    .swipe-btn.nope-btn:hover {
+      background: var(--red);
+      color: white;
+    }
+    .swipe-btn.like-btn {
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .swipe-btn.like-btn:hover {
+      background: var(--green);
+      color: white;
+    }
+    .swipe-btn.back-btn {
+      border-color: var(--text-dim);
+      color: var(--text-dim);
+      width: 48px;
+      height: 48px;
+      font-size: 1.2rem;
+    }
+    .swipe-btn.back-btn:hover {
+      background: var(--text-dim);
+      color: var(--bg);
+    }
+
+    .swipe-done {
+      text-align: center;
+      padding: 2rem;
+    }
+    .swipe-done h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .swipe-done p {
+      color: var(--text-dim);
+    }
+
     /* ---- EMPTY STATE ---- */
     .empty-state {
       grid-column: 1 / -1;
@@ -341,20 +652,6 @@
       color: var(--text-dim);
     }
 
-    /* ---- SHUFFLE BTN ---- */
-    .shuffle-btn {
-      background: var(--accent3);
-      color: white;
-      border: none;
-      padding: 0.5rem 1.2rem;
-      border-radius: 2rem;
-      cursor: pointer;
-      font-size: 0.85rem;
-      font-family: 'Inter', sans-serif;
-      transition: background 0.2s;
-    }
-    .shuffle-btn:hover { background: var(--accent); }
-
     /* ---- FOOTER ---- */
     footer {
       text-align: center;
@@ -362,6 +659,26 @@
       color: var(--text-dim);
       font-size: 0.8rem;
       border-top: 1px solid var(--border);
+    }
+
+    /* keyboard hint */
+    .kb-hint {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      z-index: 2002;
+      white-space: nowrap;
+    }
+    kbd {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 0.75rem;
+      font-family: 'Inter', sans-serif;
     }
   </style>
 </head>
@@ -394,10 +711,37 @@
 
 <div class="grid" id="grid"></div>
 
-<!-- Modal -->
+<!-- Detail Modal -->
 <div class="modal-overlay" id="modal-overlay">
   <button class="modal-close" id="modal-close">&times;</button>
   <div class="modal" id="modal"></div>
+</div>
+
+<!-- Slideshow Mode -->
+<div class="slideshow-overlay" id="slideshow-overlay">
+  <button class="slideshow-close" id="slideshow-close">&times;</button>
+  <div class="slideshow-counter" id="slideshow-counter"></div>
+  <div class="slideshow-main">
+    <button class="slideshow-arrow left" id="slide-prev">&larr;</button>
+    <div class="slideshow-img-wrap" id="slideshow-img"></div>
+    <button class="slideshow-arrow right" id="slide-next">&rarr;</button>
+  </div>
+  <div class="slideshow-info" id="slideshow-info"></div>
+  <div class="slideshow-progress"><div class="slideshow-progress-fill" id="slideshow-progress"></div></div>
+  <div class="kb-hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> to flip &nbsp; <kbd>Esc</kbd> to close</div>
+</div>
+
+<!-- Swipe Mode (Dating Profiles) -->
+<div class="swipe-overlay" id="swipe-overlay">
+  <button class="swipe-close" id="swipe-close">&times;</button>
+  <div class="swipe-counter" id="swipe-counter"></div>
+  <div class="swipe-stage" id="swipe-stage"></div>
+  <div class="swipe-buttons">
+    <button class="swipe-btn back-btn" id="swipe-back" title="Undo">&#8634;</button>
+    <button class="swipe-btn nope-btn" id="swipe-nope" title="Nope">&times;</button>
+    <button class="swipe-btn like-btn" id="swipe-like" title="Like">&hearts;</button>
+  </div>
+  <div class="kb-hint"><kbd>&larr;</kbd> nope &nbsp; <kbd>&rarr;</kbd> like &nbsp; <kbd>Z</kbd> undo &nbsp; <kbd>Esc</kbd> close</div>
 </div>
 
 <footer>
@@ -422,6 +766,19 @@ let allData = [];
 let activeFilter = 'All';
 let searchQuery = '';
 
+/* ===========================
+   SLIDESHOW STATE
+   =========================== */
+let slideItems = [];
+let slideIndex = 0;
+
+/* ===========================
+   SWIPE STATE
+   =========================== */
+let swipeItems = [];
+let swipeIndex = 0;
+let swipeHistory = [];
+
 fetch('submissions.json')
   .then(r => r.json())
   .then(data => {
@@ -429,63 +786,105 @@ fetch('submissions.json')
     init();
   });
 
+/* ---------- INIT ---------- */
 function init() {
-  // Stats
   document.getElementById('total-count').textContent = allData.length;
   const types = [...new Set(allData.map(d => d.type))];
   document.getElementById('type-count').textContent = types.length;
   const creators = new Set();
-  allData.forEach(d => {
-    creators.add(d.name);
-    if (d.partner) creators.add(d.partner);
-  });
+  allData.forEach(d => { creators.add(d.name); if (d.partner) creators.add(d.partner); });
   document.getElementById('creator-count').textContent = creators.size;
 
-  // Build filters
-  const filterContainer = document.getElementById('filters');
+  const fc = document.getElementById('filters');
   const typeCounts = {};
   allData.forEach(d => { typeCounts[d.type] = (typeCounts[d.type] || 0) + 1; });
 
   const allBtn = makeFilterBtn('All', allData.length);
   allBtn.classList.add('active');
-  filterContainer.appendChild(allBtn);
+  fc.appendChild(allBtn);
 
-  // Sort types by count
-  const sortedTypes = Object.entries(typeCounts).sort((a,b) => b[1] - a[1]);
-  sortedTypes.forEach(([type, count]) => {
-    filterContainer.appendChild(makeFilterBtn(type, count));
+  Object.entries(typeCounts).sort((a,b) => b[1] - a[1]).forEach(([type, count]) => {
+    fc.appendChild(makeFilterBtn(type, count));
   });
+
+  // -- Mode buttons (separator) --
+  const sep = document.createElement('span');
+  sep.style.cssText = 'width:1px;height:28px;background:var(--border);margin:0 0.3rem;align-self:center;';
+  fc.appendChild(sep);
+
+  // Slideshow button
+  const slideBtn = document.createElement('button');
+  slideBtn.className = 'mode-btn';
+  slideBtn.innerHTML = '&#9654; Slideshow';
+  slideBtn.onclick = openSlideshow;
+  fc.appendChild(slideBtn);
+
+  // Swipe button
+  const swipeBtn = document.createElement('button');
+  swipeBtn.className = 'mode-btn';
+  swipeBtn.innerHTML = '&#128149; Swipe Profiles';
+  swipeBtn.onclick = openSwipe;
+  fc.appendChild(swipeBtn);
 
   // Shuffle button
   const shuffleBtn = document.createElement('button');
-  shuffleBtn.className = 'shuffle-btn';
+  shuffleBtn.className = 'mode-btn';
   shuffleBtn.textContent = 'Shuffle';
-  shuffleBtn.onclick = () => {
-    allData = shuffleArray([...allData]);
-    render();
-  };
-  filterContainer.appendChild(shuffleBtn);
+  shuffleBtn.onclick = () => { allData = shuffleArray([...allData]); render(); };
+  fc.appendChild(shuffleBtn);
 
-  // Search
   document.getElementById('search').addEventListener('input', (e) => {
     searchQuery = e.target.value.toLowerCase();
     render();
   });
 
-  // Modal close
+  // Modal
   document.getElementById('modal-overlay').onclick = (e) => {
-    if (e.target === e.currentTarget || e.target === document.getElementById('modal-close')) {
-      closeModal();
-    }
+    if (e.target === e.currentTarget) closeModal();
   };
   document.getElementById('modal-close').onclick = closeModal;
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
-  // Shuffle initial order for fun
+  // Slideshow
+  document.getElementById('slideshow-close').onclick = closeSlideshow;
+  document.getElementById('slide-prev').onclick = () => slideTo(slideIndex - 1);
+  document.getElementById('slide-next').onclick = () => slideTo(slideIndex + 1);
+
+  // Swipe
+  document.getElementById('swipe-close').onclick = closeSwipe;
+  document.getElementById('swipe-nope').onclick = () => swipeDecide('left');
+  document.getElementById('swipe-like').onclick = () => swipeDecide('right');
+  document.getElementById('swipe-back').onclick = swipeUndo;
+
+  // Global keyboard
+  document.addEventListener('keydown', handleKeydown);
+
   allData = shuffleArray([...allData]);
   render();
 }
 
+function handleKeydown(e) {
+  // Slideshow keys
+  if (document.getElementById('slideshow-overlay').classList.contains('open')) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); slideTo(slideIndex + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); slideTo(slideIndex - 1); }
+    else if (e.key === 'Escape') closeSlideshow();
+    return;
+  }
+  // Swipe keys
+  if (document.getElementById('swipe-overlay').classList.contains('open')) {
+    if (e.key === 'ArrowLeft') swipeDecide('left');
+    else if (e.key === 'ArrowRight') swipeDecide('right');
+    else if (e.key === 'z' || e.key === 'Z') swipeUndo();
+    else if (e.key === 'Escape') closeSwipe();
+    return;
+  }
+  // Modal
+  if (document.getElementById('modal-overlay').classList.contains('open')) {
+    if (e.key === 'Escape') closeModal();
+  }
+}
+
+/* ---------- FILTER BUTTONS ---------- */
 function makeFilterBtn(label, count) {
   const btn = document.createElement('button');
   btn.className = 'filter-btn';
@@ -500,21 +899,22 @@ function makeFilterBtn(label, count) {
   return btn;
 }
 
+/* ---------- GRID RENDER ---------- */
+function getFiltered() {
+  let f = allData;
+  if (activeFilter !== 'All') f = f.filter(d => d.type === activeFilter);
+  if (searchQuery) f = f.filter(d =>
+    d.name.toLowerCase().includes(searchQuery) ||
+    d.description.toLowerCase().includes(searchQuery) ||
+    d.type.toLowerCase().includes(searchQuery) ||
+    (d.partner && d.partner.toLowerCase().includes(searchQuery))
+  );
+  return f;
+}
+
 function render() {
   const grid = document.getElementById('grid');
-  let filtered = allData;
-
-  if (activeFilter !== 'All') {
-    filtered = filtered.filter(d => d.type === activeFilter);
-  }
-  if (searchQuery) {
-    filtered = filtered.filter(d =>
-      d.name.toLowerCase().includes(searchQuery) ||
-      d.description.toLowerCase().includes(searchQuery) ||
-      d.type.toLowerCase().includes(searchQuery) ||
-      (d.partner && d.partner.toLowerCase().includes(searchQuery))
-    );
-  }
+  const filtered = getFiltered();
 
   if (filtered.length === 0) {
     grid.innerHTML = '<div class="empty-state"><p>No submissions match your search.</p></div>';
@@ -524,13 +924,11 @@ function render() {
   grid.innerHTML = filtered.map((d, i) => {
     const icon = TYPE_ICONS[d.type] || '✨';
     const imgHtml = d.thumbnail_url
-      ? `<img class="card-img" src="${d.thumbnail_url}" alt="${escHtml(d.name)}'s submission" loading="lazy" onerror="this.outerHTML='<div class=\\'card-img-placeholder\\'>${icon}</div>'">`
+      ? `<img class="card-img" src="${d.thumbnail_url}" alt="${escHtml(d.name)}" loading="lazy" onerror="this.outerHTML='<div class=\\'card-img-placeholder\\'>${icon}</div>'">`
       : `<div class="card-img-placeholder">${icon}</div>`;
-
     const partnerHtml = d.partner ? `<div class="card-partner">with ${escHtml(d.partner)}</div>` : '';
-
     return `
-      <div class="card" onclick="openModal(${i}, '${activeFilter}', '${escAttr(searchQuery)}')">
+      <div class="card" onclick="openModal(${i})">
         ${imgHtml}
         <div class="card-body">
           <div class="card-type">${icon} ${escHtml(d.type)}</div>
@@ -541,36 +939,26 @@ function render() {
         <div class="card-footer">
           ${d.ai_tools ? `<span class="ai-tag">${escHtml(d.ai_tools)}</span>` : ''}
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
-function openModal(index, filter, search) {
-  let filtered = allData;
-  if (filter !== 'All') filtered = filtered.filter(d => d.type === filter);
-  if (search) filtered = filtered.filter(d =>
-    d.name.toLowerCase().includes(search) ||
-    d.description.toLowerCase().includes(search) ||
-    d.type.toLowerCase().includes(search)
-  );
-
+/* ==============================
+   DETAIL MODAL
+   ============================== */
+function openModal(index) {
+  const filtered = getFiltered();
   const d = filtered[index];
   if (!d) return;
-
   const icon = TYPE_ICONS[d.type] || '✨';
   const modal = document.getElementById('modal');
 
   let mediaHtml = '';
-  if (d.embed_url) {
-    mediaHtml = `<iframe class="modal-iframe" src="${d.embed_url}" allowfullscreen></iframe>`;
-  } else if (d.thumbnail_url) {
-    mediaHtml = `<img class="modal-media" src="${d.thumbnail_url}" alt="${escHtml(d.name)}">`;
-  }
+  if (d.embed_url) mediaHtml = `<iframe class="modal-iframe" src="${d.embed_url}" allowfullscreen></iframe>`;
+  else if (d.thumbnail_url) mediaHtml = `<img class="modal-media" src="${d.thumbnail_url}" alt="${escHtml(d.name)}">`;
 
   const linkHtml = d.url && d.url !== 'n/a' && d.url !== 'N/A' && d.url !== 'none' && !d.url.startsWith('file://')
-    ? `<a class="modal-link" href="${escHtml(d.url)}" target="_blank" rel="noopener">Open original &rarr;</a>`
-    : '';
+    ? `<a class="modal-link" href="${escHtml(d.url)}" target="_blank" rel="noopener">Open original &rarr;</a>` : '';
 
   modal.innerHTML = `
     ${mediaHtml}
@@ -581,9 +969,7 @@ function openModal(index, filter, search) {
       <div class="modal-desc">${escHtml(d.description)}</div>
       <div class="modal-meta">AI tools: ${escHtml(d.ai_tools || 'None')}</div>
       ${linkHtml}
-    </div>
-  `;
-
+    </div>`;
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -591,10 +977,194 @@ function openModal(index, filter, search) {
 function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
-  // Remove any iframes to stop video/audio
   document.getElementById('modal').innerHTML = '';
 }
 
+/* ==============================
+   SLIDESHOW MODE
+   ============================== */
+function openSlideshow() {
+  slideItems = getFiltered();
+  if (slideItems.length === 0) return;
+  slideItems = shuffleArray([...slideItems]);
+  slideIndex = 0;
+  document.getElementById('slideshow-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderSlide();
+}
+
+function closeSlideshow() {
+  document.getElementById('slideshow-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function slideTo(idx) {
+  if (idx < 0) idx = slideItems.length - 1;
+  if (idx >= slideItems.length) idx = 0;
+  slideIndex = idx;
+  renderSlide();
+}
+
+function renderSlide() {
+  const d = slideItems[slideIndex];
+  const icon = TYPE_ICONS[d.type] || '✨';
+
+  document.getElementById('slideshow-counter').textContent = `${slideIndex + 1} / ${slideItems.length}`;
+
+  const imgWrap = document.getElementById('slideshow-img');
+  if (d.thumbnail_url) {
+    imgWrap.innerHTML = `<img src="${d.thumbnail_url}" alt="${escHtml(d.name)}" onerror="this.outerHTML='<div class=\\'slide-placeholder\\'>${icon}</div>'">`;
+  } else {
+    imgWrap.innerHTML = `<div class="slide-placeholder">${icon}</div>`;
+  }
+
+  const info = document.getElementById('slideshow-info');
+  info.innerHTML = `
+    <div class="si-name">${escHtml(d.name)}</div>
+    ${d.partner ? `<div class="si-partner">with ${escHtml(d.partner)}</div>` : ''}
+    <div class="si-desc">${escHtml(d.description)}</div>`;
+
+  const pct = ((slideIndex + 1) / slideItems.length) * 100;
+  document.getElementById('slideshow-progress').style.width = pct + '%';
+}
+
+/* ==============================
+   SWIPE MODE (Dating Profiles)
+   ============================== */
+function openSwipe() {
+  swipeItems = allData.filter(d => d.type === 'Dating Profile for a Molecule');
+  if (swipeItems.length === 0) return;
+  swipeItems = shuffleArray([...swipeItems]);
+  swipeIndex = 0;
+  swipeHistory = [];
+  document.getElementById('swipe-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderSwipeCard();
+}
+
+function closeSwipe() {
+  document.getElementById('swipe-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('swipe-stage').innerHTML = '';
+}
+
+function renderSwipeCard() {
+  const stage = document.getElementById('swipe-stage');
+  stage.innerHTML = '';
+
+  document.getElementById('swipe-counter').textContent =
+    swipeIndex < swipeItems.length
+      ? `${swipeIndex + 1} / ${swipeItems.length}`
+      : '';
+
+  if (swipeIndex >= swipeItems.length) {
+    stage.innerHTML = `<div class="swipe-done">
+      <h2>💕 All done!</h2>
+      <p>You've seen all ${swipeItems.length} molecule dating profiles.</p>
+    </div>`;
+    return;
+  }
+
+  const d = swipeItems[swipeIndex];
+  const card = document.createElement('div');
+  card.className = 'swipe-card';
+  card.id = 'current-swipe-card';
+
+  const imgHtml = d.thumbnail_url
+    ? `<img class="swipe-card-img" src="${d.thumbnail_url}" alt="${escHtml(d.name)}" onerror="this.outerHTML='<div class=\\'swipe-card-placeholder\\'>💕</div>'">`
+    : `<div class="swipe-card-placeholder">💕</div>`;
+
+  card.innerHTML = `
+    <div class="swipe-stamp like">LIKE</div>
+    <div class="swipe-stamp nope">NOPE</div>
+    ${imgHtml}
+    <div class="swipe-card-body">
+      <div class="swipe-card-name">${escHtml(d.name)}</div>
+      ${d.partner ? `<div class="swipe-card-partner">with ${escHtml(d.partner)}</div>` : ''}
+      <div class="swipe-card-desc">${escHtml(d.description)}</div>
+    </div>`;
+
+  stage.appendChild(card);
+  setupSwipeDrag(card);
+}
+
+function swipeDecide(dir) {
+  const card = document.getElementById('current-swipe-card');
+  if (!card) return;
+
+  card.classList.add(dir === 'left' ? 'exit-left' : 'exit-right');
+  swipeHistory.push(swipeIndex);
+  swipeIndex++;
+
+  setTimeout(() => renderSwipeCard(), 350);
+}
+
+function swipeUndo() {
+  if (swipeHistory.length === 0) return;
+  swipeIndex = swipeHistory.pop();
+  renderSwipeCard();
+}
+
+/* Drag-to-swipe on the card */
+function setupSwipeDrag(card) {
+  let startX = 0, currentX = 0, dragging = false;
+
+  const onStart = (x) => {
+    startX = x;
+    currentX = x;
+    dragging = true;
+    card.classList.add('dragging');
+  };
+
+  const onMove = (x) => {
+    if (!dragging) return;
+    currentX = x;
+    const dx = currentX - startX;
+    const rot = dx * 0.08;
+    card.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
+
+    const likeStamp = card.querySelector('.swipe-stamp.like');
+    const nopeStamp = card.querySelector('.swipe-stamp.nope');
+    if (dx > 50) {
+      likeStamp.style.opacity = Math.min((dx - 50) / 80, 1);
+      nopeStamp.style.opacity = 0;
+    } else if (dx < -50) {
+      nopeStamp.style.opacity = Math.min((-dx - 50) / 80, 1);
+      likeStamp.style.opacity = 0;
+    } else {
+      likeStamp.style.opacity = 0;
+      nopeStamp.style.opacity = 0;
+    }
+  };
+
+  const onEnd = () => {
+    if (!dragging) return;
+    dragging = false;
+    card.classList.remove('dragging');
+    const dx = currentX - startX;
+    if (dx > 100) {
+      swipeDecide('right');
+    } else if (dx < -100) {
+      swipeDecide('left');
+    } else {
+      card.style.transform = '';
+      card.querySelector('.swipe-stamp.like').style.opacity = 0;
+      card.querySelector('.swipe-stamp.nope').style.opacity = 0;
+    }
+  };
+
+  // Mouse
+  card.addEventListener('mousedown', (e) => { e.preventDefault(); onStart(e.clientX); });
+  document.addEventListener('mousemove', (e) => onMove(e.clientX));
+  document.addEventListener('mouseup', onEnd);
+
+  // Touch
+  card.addEventListener('touchstart', (e) => onStart(e.touches[0].clientX), { passive: true });
+  card.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX), { passive: true });
+  card.addEventListener('touchend', onEnd);
+}
+
+/* ---------- UTILS ---------- */
 function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -604,9 +1174,9 @@ function shuffleArray(arr) {
 }
 
 function escHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
 }
 
 function escAttr(str) {
