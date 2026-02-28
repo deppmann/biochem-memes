@@ -1000,11 +1000,7 @@ function renderSwipeCard() {
   card.innerHTML = `
     <div class="swipe-stamp like">LIKE</div>
     <div class="swipe-stamp nope">NOPE</div>
-    ${imgHtml}
-    <div class="swipe-card-body">
-      <div class="swipe-card-type">${icon} ${escHtml(d.type)}</div>
-      <div class="swipe-card-desc">${escHtml(d.description)}</div>
-    </div>`;
+    ${imgHtml}`;
 
   stage.appendChild(card);
   setupSwipeDrag(card);
