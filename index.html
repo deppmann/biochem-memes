@@ -456,8 +456,11 @@
 
     .swipe-stage {
       position: relative;
-      width: 420px;
-      max-width: 92vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 90vw;
+      max-width: 900px;
       height: 70vh;
       max-height: 700px;
       perspective: 1000px;
@@ -465,7 +468,6 @@
 
     .swipe-card {
       position: absolute;
-      inset: 0;
       background: var(--card-bg);
       border-radius: 20px;
       overflow: hidden;
@@ -475,6 +477,9 @@
       transition: transform 0.4s cubic-bezier(.22,.68,0,1.1), opacity 0.4s;
       will-change: transform;
       touch-action: pan-y;
+      /* sized by content via JS, centered in stage */
+      max-width: 90vw;
+      max-height: 70vh;
     }
     .swipe-card.dragging {
       transition: none;
@@ -490,8 +495,11 @@
     }
 
     .swipe-card-img {
-      width: 100%;
       display: block;
+      max-width: 90vw;
+      max-height: 70vh;
+      width: auto;
+      height: auto;
       background: #111;
     }
     .swipe-card-placeholder {
