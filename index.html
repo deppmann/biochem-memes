@@ -207,17 +207,6 @@
       font-weight: 600;
       margin-bottom: 0.4rem;
     }
-    .card-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-    }
-    .card-partner {
-      font-size: 0.8rem;
-      color: var(--accent);
-      margin-bottom: 0.4rem;
-    }
     .card-desc {
       font-size: 0.82rem;
       color: var(--text-dim);
@@ -244,7 +233,7 @@
       font-size: 0.7rem;
     }
 
-    /* ---- MODAL (click-to-view) ---- */
+    /* ---- DETAIL MODAL (for non-slideshow/swipe types) ---- */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -288,27 +277,17 @@
       color: var(--accent);
       font-weight: 600;
     }
-    .modal-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin: 0.3rem 0;
-    }
-    .modal-partner {
-      font-size: 0.9rem;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
     .modal-desc {
       color: var(--text-dim);
       line-height: 1.6;
+      margin-top: 0.5rem;
       margin-bottom: 1rem;
     }
     .modal-meta {
       font-size: 0.8rem;
       color: var(--text-dim);
     }
-    .modal-close, .slideshow-close, .swipe-close {
+    .overlay-close {
       position: absolute;
       top: 1rem;
       right: 1rem;
@@ -320,22 +299,12 @@
       border-radius: 50%;
       font-size: 1.3rem;
       cursor: pointer;
-      z-index: 1001;
+      z-index: 2002;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .modal-close:hover, .slideshow-close:hover, .swipe-close:hover {
-      background: var(--accent);
-    }
-    .modal-link {
-      display: inline-block;
-      margin-top: 0.8rem;
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-    .modal-link:hover { text-decoration: underline; }
+    .overlay-close:hover { background: var(--accent); }
 
     /* ---- SLIDESHOW MODE ---- */
     .slideshow-overlay {
@@ -359,7 +328,7 @@
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1rem;
       color: var(--text-dim);
-      z-index: 2002;
+      z-index: 2003;
     }
 
     .slideshow-main {
@@ -384,7 +353,6 @@
       max-height: 65vh;
       object-fit: contain;
       border-radius: 8px;
-      transition: opacity 0.15s;
     }
     .slideshow-img-wrap .slide-placeholder {
       width: 300px;
@@ -395,6 +363,14 @@
       align-items: center;
       justify-content: center;
       font-size: 5rem;
+    }
+    .slideshow-img-wrap iframe {
+      width: 80vw;
+      max-width: 800px;
+      height: 55vh;
+      border: none;
+      border-radius: 8px;
+      background: #111;
     }
 
     .slideshow-arrow {
@@ -425,26 +401,22 @@
       padding: 1rem 2rem 2rem;
       text-align: center;
     }
-    .slideshow-info .si-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
+    .slideshow-info .si-type {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      font-weight: 600;
     }
     .slideshow-info .si-desc {
       color: var(--text-dim);
       font-size: 0.85rem;
       line-height: 1.5;
       margin-top: 0.4rem;
-      max-height: 3.5em;
+      max-height: 4.5em;
       overflow: hidden;
     }
-    .slideshow-info .si-partner {
-      color: var(--accent);
-      font-size: 0.85rem;
-      margin-top: 0.2rem;
-    }
 
-    /* Progress bar */
     .slideshow-progress {
       width: 100%;
       height: 3px;
@@ -458,7 +430,7 @@
       transition: width 0.2s;
     }
 
-    /* ---- SWIPE MODE (Dating Profiles) ---- */
+    /* ---- SWIPE MODE ---- */
     .swipe-overlay {
       display: none;
       position: fixed;
@@ -479,15 +451,15 @@
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1rem;
       color: var(--text-dim);
-      z-index: 2002;
+      z-index: 2003;
     }
 
     .swipe-stage {
       position: relative;
-      width: 380px;
-      max-width: 90vw;
-      height: 540px;
-      max-height: 70vh;
+      width: 400px;
+      max-width: 92vw;
+      height: 600px;
+      max-height: 72vh;
       perspective: 1000px;
     }
 
@@ -520,42 +492,43 @@
 
     .swipe-card-img {
       width: 100%;
-      height: 55%;
+      height: 40%;
+      min-height: 160px;
       object-fit: cover;
       background: #111;
+      flex-shrink: 0;
     }
     .swipe-card-placeholder {
       width: 100%;
-      height: 55%;
+      height: 40%;
+      min-height: 160px;
       background: linear-gradient(135deg, var(--accent2), var(--accent3));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 5rem;
+      font-size: 4rem;
+      flex-shrink: 0;
     }
     .swipe-card-body {
       padding: 1rem 1.2rem;
       flex: 1;
       overflow-y: auto;
+      min-height: 0;
     }
-    .swipe-card-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-    }
-    .swipe-card-partner {
-      font-size: 0.85rem;
+    .swipe-card-type {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       color: var(--accent);
-      margin-top: 0.2rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
     }
     .swipe-card-desc {
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       color: var(--text-dim);
-      line-height: 1.5;
-      margin-top: 0.5rem;
+      line-height: 1.55;
     }
 
-    /* Swipe stamp overlays */
     .swipe-stamp {
       position: absolute;
       top: 2rem;
@@ -565,7 +538,6 @@
       padding: 0.3rem 1rem;
       border-radius: 8px;
       border: 4px solid;
-      transform: rotate(-15deg);
       opacity: 0;
       transition: opacity 0.15s;
       pointer-events: none;
@@ -603,22 +575,10 @@
       transition: transform 0.2s, background 0.2s;
     }
     .swipe-btn:active { transform: scale(0.9); }
-    .swipe-btn.nope-btn {
-      border-color: var(--red);
-      color: var(--red);
-    }
-    .swipe-btn.nope-btn:hover {
-      background: var(--red);
-      color: white;
-    }
-    .swipe-btn.like-btn {
-      border-color: var(--green);
-      color: var(--green);
-    }
-    .swipe-btn.like-btn:hover {
-      background: var(--green);
-      color: white;
-    }
+    .swipe-btn.nope-btn { border-color: var(--red); color: var(--red); }
+    .swipe-btn.nope-btn:hover { background: var(--red); color: white; }
+    .swipe-btn.like-btn { border-color: var(--green); color: var(--green); }
+    .swipe-btn.like-btn:hover { background: var(--green); color: white; }
     .swipe-btn.back-btn {
       border-color: var(--text-dim);
       color: var(--text-dim);
@@ -626,10 +586,7 @@
       height: 48px;
       font-size: 1.2rem;
     }
-    .swipe-btn.back-btn:hover {
-      background: var(--text-dim);
-      color: var(--bg);
-    }
+    .swipe-btn.back-btn:hover { background: var(--text-dim); color: var(--bg); }
 
     .swipe-done {
       text-align: center;
@@ -640,9 +597,7 @@
       font-size: 2rem;
       margin-bottom: 0.5rem;
     }
-    .swipe-done p {
-      color: var(--text-dim);
-    }
+    .swipe-done p { color: var(--text-dim); }
 
     /* ---- EMPTY STATE ---- */
     .empty-state {
@@ -661,7 +616,6 @@
       border-top: 1px solid var(--border);
     }
 
-    /* keyboard hint */
     .kb-hint {
       position: absolute;
       bottom: 1.5rem;
@@ -669,7 +623,7 @@
       transform: translateX(-50%);
       font-size: 0.75rem;
       color: var(--text-dim);
-      z-index: 2002;
+      z-index: 2003;
       white-space: nowrap;
     }
     kbd {
@@ -696,30 +650,26 @@
       <div class="stat-num" id="type-count">0</div>
       <div class="stat-label">Categories</div>
     </div>
-    <div class="stat">
-      <div class="stat-num" id="creator-count">0</div>
-      <div class="stat-label">Creators</div>
-    </div>
   </div>
 </header>
 
 <div class="filters" id="filters"></div>
 
 <div class="search-wrap">
-  <input type="text" id="search" placeholder="Search by name, concept, or description...">
+  <input type="text" id="search" placeholder="Search by concept or description...">
 </div>
 
 <div class="grid" id="grid"></div>
 
-<!-- Detail Modal -->
+<!-- Detail Modal (for songs, videos, comics, etc.) -->
 <div class="modal-overlay" id="modal-overlay">
-  <button class="modal-close" id="modal-close">&times;</button>
+  <button class="overlay-close" id="modal-close">&times;</button>
   <div class="modal" id="modal"></div>
 </div>
 
 <!-- Slideshow Mode -->
 <div class="slideshow-overlay" id="slideshow-overlay">
-  <button class="slideshow-close" id="slideshow-close">&times;</button>
+  <button class="overlay-close" id="slideshow-close">&times;</button>
   <div class="slideshow-counter" id="slideshow-counter"></div>
   <div class="slideshow-main">
     <button class="slideshow-arrow left" id="slide-prev">&larr;</button>
@@ -728,12 +678,12 @@
   </div>
   <div class="slideshow-info" id="slideshow-info"></div>
   <div class="slideshow-progress"><div class="slideshow-progress-fill" id="slideshow-progress"></div></div>
-  <div class="kb-hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> to flip &nbsp; <kbd>Esc</kbd> to close</div>
+  <div class="kb-hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> to flip &nbsp; <kbd>Space</kbd> next &nbsp; <kbd>Esc</kbd> close</div>
 </div>
 
-<!-- Swipe Mode (Dating Profiles) -->
+<!-- Swipe Mode -->
 <div class="swipe-overlay" id="swipe-overlay">
-  <button class="swipe-close" id="swipe-close">&times;</button>
+  <button class="overlay-close" id="swipe-close">&times;</button>
   <div class="swipe-counter" id="swipe-counter"></div>
   <div class="swipe-stage" id="swipe-stage"></div>
   <div class="swipe-buttons">
@@ -762,39 +712,34 @@ const TYPE_ICONS = {
   'Fake Podcast Episode': '🎙️',
 };
 
+// Types that open slideshow when card is clicked
+const SLIDESHOW_TYPES = new Set(['Meme (image)', 'Comic Strip']);
+// Types that open swipe mode when card is clicked
+const SWIPE_TYPES = new Set(['Dating Profile for a Molecule']);
+
 let allData = [];
 let activeFilter = 'All';
 let searchQuery = '';
 
-/* ===========================
-   SLIDESHOW STATE
-   =========================== */
+// Slideshow state
 let slideItems = [];
 let slideIndex = 0;
 
-/* ===========================
-   SWIPE STATE
-   =========================== */
+// Swipe state
 let swipeItems = [];
 let swipeIndex = 0;
 let swipeHistory = [];
 
 fetch('submissions.json')
   .then(r => r.json())
-  .then(data => {
-    allData = data;
-    init();
-  });
+  .then(data => { allData = data; init(); });
 
-/* ---------- INIT ---------- */
 function init() {
   document.getElementById('total-count').textContent = allData.length;
   const types = [...new Set(allData.map(d => d.type))];
   document.getElementById('type-count').textContent = types.length;
-  const creators = new Set();
-  allData.forEach(d => { creators.add(d.name); if (d.partner) creators.add(d.partner); });
-  document.getElementById('creator-count').textContent = creators.size;
 
+  // Build filters
   const fc = document.getElementById('filters');
   const typeCounts = {};
   allData.forEach(d => { typeCounts[d.type] = (typeCounts[d.type] || 0) + 1; });
@@ -802,29 +747,14 @@ function init() {
   const allBtn = makeFilterBtn('All', allData.length);
   allBtn.classList.add('active');
   fc.appendChild(allBtn);
-
   Object.entries(typeCounts).sort((a,b) => b[1] - a[1]).forEach(([type, count]) => {
     fc.appendChild(makeFilterBtn(type, count));
   });
 
-  // -- Mode buttons (separator) --
+  // Separator
   const sep = document.createElement('span');
   sep.style.cssText = 'width:1px;height:28px;background:var(--border);margin:0 0.3rem;align-self:center;';
   fc.appendChild(sep);
-
-  // Slideshow button
-  const slideBtn = document.createElement('button');
-  slideBtn.className = 'mode-btn';
-  slideBtn.innerHTML = '&#9654; Slideshow';
-  slideBtn.onclick = openSlideshow;
-  fc.appendChild(slideBtn);
-
-  // Swipe button
-  const swipeBtn = document.createElement('button');
-  swipeBtn.className = 'mode-btn';
-  swipeBtn.innerHTML = '&#128149; Swipe Profiles';
-  swipeBtn.onclick = openSwipe;
-  fc.appendChild(swipeBtn);
 
   // Shuffle button
   const shuffleBtn = document.createElement('button');
@@ -833,29 +763,23 @@ function init() {
   shuffleBtn.onclick = () => { allData = shuffleArray([...allData]); render(); };
   fc.appendChild(shuffleBtn);
 
+  // Search
   document.getElementById('search').addEventListener('input', (e) => {
     searchQuery = e.target.value.toLowerCase();
     render();
   });
 
-  // Modal
-  document.getElementById('modal-overlay').onclick = (e) => {
-    if (e.target === e.currentTarget) closeModal();
-  };
+  // Close handlers
+  document.getElementById('modal-overlay').onclick = (e) => { if (e.target === e.currentTarget) closeModal(); };
   document.getElementById('modal-close').onclick = closeModal;
-
-  // Slideshow
   document.getElementById('slideshow-close').onclick = closeSlideshow;
   document.getElementById('slide-prev').onclick = () => slideTo(slideIndex - 1);
   document.getElementById('slide-next').onclick = () => slideTo(slideIndex + 1);
-
-  // Swipe
   document.getElementById('swipe-close').onclick = closeSwipe;
   document.getElementById('swipe-nope').onclick = () => swipeDecide('left');
   document.getElementById('swipe-like').onclick = () => swipeDecide('right');
   document.getElementById('swipe-back').onclick = swipeUndo;
 
-  // Global keyboard
   document.addEventListener('keydown', handleKeydown);
 
   allData = shuffleArray([...allData]);
@@ -863,14 +787,12 @@ function init() {
 }
 
 function handleKeydown(e) {
-  // Slideshow keys
   if (document.getElementById('slideshow-overlay').classList.contains('open')) {
     if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); slideTo(slideIndex + 1); }
     else if (e.key === 'ArrowLeft') { e.preventDefault(); slideTo(slideIndex - 1); }
     else if (e.key === 'Escape') closeSlideshow();
     return;
   }
-  // Swipe keys
   if (document.getElementById('swipe-overlay').classList.contains('open')) {
     if (e.key === 'ArrowLeft') swipeDecide('left');
     else if (e.key === 'ArrowRight') swipeDecide('right');
@@ -878,13 +800,11 @@ function handleKeydown(e) {
     else if (e.key === 'Escape') closeSwipe();
     return;
   }
-  // Modal
   if (document.getElementById('modal-overlay').classList.contains('open')) {
     if (e.key === 'Escape') closeModal();
   }
 }
 
-/* ---------- FILTER BUTTONS ---------- */
 function makeFilterBtn(label, count) {
   const btn = document.createElement('button');
   btn.className = 'filter-btn';
@@ -899,15 +819,13 @@ function makeFilterBtn(label, count) {
   return btn;
 }
 
-/* ---------- GRID RENDER ---------- */
+/* ---------- GRID ---------- */
 function getFiltered() {
   let f = allData;
   if (activeFilter !== 'All') f = f.filter(d => d.type === activeFilter);
   if (searchQuery) f = f.filter(d =>
-    d.name.toLowerCase().includes(searchQuery) ||
     d.description.toLowerCase().includes(searchQuery) ||
-    d.type.toLowerCase().includes(searchQuery) ||
-    (d.partner && d.partner.toLowerCase().includes(searchQuery))
+    d.type.toLowerCase().includes(searchQuery)
   );
   return f;
 }
@@ -924,51 +842,63 @@ function render() {
   grid.innerHTML = filtered.map((d, i) => {
     const icon = TYPE_ICONS[d.type] || '✨';
     const imgHtml = d.thumbnail_url
-      ? `<img class="card-img" src="${d.thumbnail_url}" alt="${escHtml(d.name)}" loading="lazy" onerror="this.outerHTML='<div class=\\'card-img-placeholder\\'>${icon}</div>'">`
+      ? `<img class="card-img" src="${d.thumbnail_url}" alt="submission" loading="lazy" onerror="this.outerHTML='<div class=\\'card-img-placeholder\\'>${icon}</div>'">`
       : `<div class="card-img-placeholder">${icon}</div>`;
-    const partnerHtml = d.partner ? `<div class="card-partner">with ${escHtml(d.partner)}</div>` : '';
     return `
-      <div class="card" onclick="openModal(${i})">
+      <div class="card" onclick="handleCardClick(${i})">
         ${imgHtml}
         <div class="card-body">
           <div class="card-type">${icon} ${escHtml(d.type)}</div>
-          <div class="card-name">${escHtml(d.name)}</div>
-          ${partnerHtml}
           <div class="card-desc">${escHtml(d.description)}</div>
         </div>
         <div class="card-footer">
           ${d.ai_tools ? `<span class="ai-tag">${escHtml(d.ai_tools)}</span>` : ''}
+          ${d.has_partner ? '<span class="ai-tag">Partner project</span>' : ''}
         </div>
       </div>`;
   }).join('');
 }
 
-/* ==============================
-   DETAIL MODAL
-   ============================== */
-function openModal(index) {
+/* ---------- CARD CLICK ROUTING ---------- */
+function handleCardClick(indexInFiltered) {
   const filtered = getFiltered();
-  const d = filtered[index];
+  const d = filtered[indexInFiltered];
   if (!d) return;
+
+  if (SLIDESHOW_TYPES.has(d.type)) {
+    // Open slideshow with items of the same type, starting at this one
+    openSlideshowAt(d, filtered);
+  } else if (SWIPE_TYPES.has(d.type)) {
+    // Open swipe mode with dating profiles, starting at this one
+    openSwipeAt(d, filtered);
+  } else {
+    // Regular modal for everything else
+    openModal(d);
+  }
+}
+
+/* ==============================
+   DETAIL MODAL (songs, videos, rap battles, etc.)
+   ============================== */
+function openModal(d) {
   const icon = TYPE_ICONS[d.type] || '✨';
   const modal = document.getElementById('modal');
 
   let mediaHtml = '';
-  if (d.embed_url) mediaHtml = `<iframe class="modal-iframe" src="${d.embed_url}" allowfullscreen></iframe>`;
-  else if (d.thumbnail_url) mediaHtml = `<img class="modal-media" src="${d.thumbnail_url}" alt="${escHtml(d.name)}">`;
-
-  const linkHtml = d.url && d.url !== 'n/a' && d.url !== 'N/A' && d.url !== 'none' && !d.url.startsWith('file://')
-    ? `<a class="modal-link" href="${escHtml(d.url)}" target="_blank" rel="noopener">Open original &rarr;</a>` : '';
+  if (d.embed_url) {
+    mediaHtml = `<iframe class="modal-iframe" src="${d.embed_url}" allowfullscreen></iframe>`;
+  } else if (d.thumbnail_url) {
+    mediaHtml = `<img class="modal-media" src="${d.thumbnail_url}" alt="submission">`;
+  } else {
+    mediaHtml = `<div class="card-img-placeholder" style="aspect-ratio:16/9;font-size:4rem;">${icon}</div>`;
+  }
 
   modal.innerHTML = `
     ${mediaHtml}
     <div class="modal-body">
       <div class="modal-type">${icon} ${escHtml(d.type)}</div>
-      <div class="modal-name">${escHtml(d.name)}</div>
-      ${d.partner ? `<div class="modal-partner">with ${escHtml(d.partner)}</div>` : ''}
       <div class="modal-desc">${escHtml(d.description)}</div>
       <div class="modal-meta">AI tools: ${escHtml(d.ai_tools || 'None')}</div>
-      ${linkHtml}
     </div>`;
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -983,11 +913,13 @@ function closeModal() {
 /* ==============================
    SLIDESHOW MODE
    ============================== */
-function openSlideshow() {
-  slideItems = getFiltered();
-  if (slideItems.length === 0) return;
-  slideItems = shuffleArray([...slideItems]);
-  slideIndex = 0;
+function openSlideshowAt(clickedItem, filtered) {
+  // Collect all items of the same type from the filtered list
+  slideItems = filtered.filter(d => d.type === clickedItem.type);
+  // Find the index of the clicked item
+  slideIndex = slideItems.indexOf(clickedItem);
+  if (slideIndex < 0) slideIndex = 0;
+
   document.getElementById('slideshow-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   renderSlide();
@@ -996,6 +928,7 @@ function openSlideshow() {
 function closeSlideshow() {
   document.getElementById('slideshow-overlay').classList.remove('open');
   document.body.style.overflow = '';
+  document.getElementById('slideshow-img').innerHTML = '';
 }
 
 function slideTo(idx) {
@@ -1012,31 +945,31 @@ function renderSlide() {
   document.getElementById('slideshow-counter').textContent = `${slideIndex + 1} / ${slideItems.length}`;
 
   const imgWrap = document.getElementById('slideshow-img');
-  if (d.thumbnail_url) {
-    imgWrap.innerHTML = `<img src="${d.thumbnail_url}" alt="${escHtml(d.name)}" onerror="this.outerHTML='<div class=\\'slide-placeholder\\'>${icon}</div>'">`;
+  if (d.embed_url) {
+    imgWrap.innerHTML = `<iframe src="${d.embed_url}" allowfullscreen></iframe>`;
+  } else if (d.thumbnail_url) {
+    imgWrap.innerHTML = `<img src="${d.thumbnail_url}" alt="submission" onerror="this.outerHTML='<div class=\\'slide-placeholder\\'>${icon}</div>'">`;
   } else {
     imgWrap.innerHTML = `<div class="slide-placeholder">${icon}</div>`;
   }
 
-  const info = document.getElementById('slideshow-info');
-  info.innerHTML = `
-    <div class="si-name">${escHtml(d.name)}</div>
-    ${d.partner ? `<div class="si-partner">with ${escHtml(d.partner)}</div>` : ''}
+  document.getElementById('slideshow-info').innerHTML = `
+    <div class="si-type">${icon} ${escHtml(d.type)}</div>
     <div class="si-desc">${escHtml(d.description)}</div>`;
 
-  const pct = ((slideIndex + 1) / slideItems.length) * 100;
-  document.getElementById('slideshow-progress').style.width = pct + '%';
+  document.getElementById('slideshow-progress').style.width =
+    ((slideIndex + 1) / slideItems.length * 100) + '%';
 }
 
 /* ==============================
-   SWIPE MODE (Dating Profiles)
+   SWIPE MODE
    ============================== */
-function openSwipe() {
-  swipeItems = allData.filter(d => d.type === 'Dating Profile for a Molecule');
-  if (swipeItems.length === 0) return;
-  swipeItems = shuffleArray([...swipeItems]);
-  swipeIndex = 0;
+function openSwipeAt(clickedItem, filtered) {
+  swipeItems = filtered.filter(d => d.type === clickedItem.type);
+  swipeIndex = swipeItems.indexOf(clickedItem);
+  if (swipeIndex < 0) swipeIndex = 0;
   swipeHistory = [];
+
   document.getElementById('swipe-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   renderSwipeCard();
@@ -1053,34 +986,32 @@ function renderSwipeCard() {
   stage.innerHTML = '';
 
   document.getElementById('swipe-counter').textContent =
-    swipeIndex < swipeItems.length
-      ? `${swipeIndex + 1} / ${swipeItems.length}`
-      : '';
+    swipeIndex < swipeItems.length ? `${swipeIndex + 1} / ${swipeItems.length}` : '';
 
   if (swipeIndex >= swipeItems.length) {
     stage.innerHTML = `<div class="swipe-done">
-      <h2>💕 All done!</h2>
-      <p>You've seen all ${swipeItems.length} molecule dating profiles.</p>
+      <h2>All done!</h2>
+      <p>You've seen all ${swipeItems.length} profiles.</p>
     </div>`;
     return;
   }
 
   const d = swipeItems[swipeIndex];
+  const icon = TYPE_ICONS[d.type] || '💕';
   const card = document.createElement('div');
   card.className = 'swipe-card';
   card.id = 'current-swipe-card';
 
   const imgHtml = d.thumbnail_url
-    ? `<img class="swipe-card-img" src="${d.thumbnail_url}" alt="${escHtml(d.name)}" onerror="this.outerHTML='<div class=\\'swipe-card-placeholder\\'>💕</div>'">`
-    : `<div class="swipe-card-placeholder">💕</div>`;
+    ? `<img class="swipe-card-img" src="${d.thumbnail_url}" alt="submission" onerror="this.outerHTML='<div class=\\'swipe-card-placeholder\\'>${icon}</div>'">`
+    : `<div class="swipe-card-placeholder">${icon}</div>`;
 
   card.innerHTML = `
     <div class="swipe-stamp like">LIKE</div>
     <div class="swipe-stamp nope">NOPE</div>
     ${imgHtml}
     <div class="swipe-card-body">
-      <div class="swipe-card-name">${escHtml(d.name)}</div>
-      ${d.partner ? `<div class="swipe-card-partner">with ${escHtml(d.partner)}</div>` : ''}
+      <div class="swipe-card-type">${icon} ${escHtml(d.type)}</div>
       <div class="swipe-card-desc">${escHtml(d.description)}</div>
     </div>`;
 
@@ -1091,11 +1022,9 @@ function renderSwipeCard() {
 function swipeDecide(dir) {
   const card = document.getElementById('current-swipe-card');
   if (!card) return;
-
   card.classList.add(dir === 'left' ? 'exit-left' : 'exit-right');
   swipeHistory.push(swipeIndex);
   swipeIndex++;
-
   setTimeout(() => renderSwipeCard(), 350);
 }
 
@@ -1105,60 +1034,38 @@ function swipeUndo() {
   renderSwipeCard();
 }
 
-/* Drag-to-swipe on the card */
 function setupSwipeDrag(card) {
   let startX = 0, currentX = 0, dragging = false;
 
-  const onStart = (x) => {
-    startX = x;
-    currentX = x;
-    dragging = true;
-    card.classList.add('dragging');
-  };
-
+  const onStart = (x) => { startX = x; currentX = x; dragging = true; card.classList.add('dragging'); };
   const onMove = (x) => {
     if (!dragging) return;
     currentX = x;
     const dx = currentX - startX;
-    const rot = dx * 0.08;
-    card.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
-
-    const likeStamp = card.querySelector('.swipe-stamp.like');
-    const nopeStamp = card.querySelector('.swipe-stamp.nope');
-    if (dx > 50) {
-      likeStamp.style.opacity = Math.min((dx - 50) / 80, 1);
-      nopeStamp.style.opacity = 0;
-    } else if (dx < -50) {
-      nopeStamp.style.opacity = Math.min((-dx - 50) / 80, 1);
-      likeStamp.style.opacity = 0;
-    } else {
-      likeStamp.style.opacity = 0;
-      nopeStamp.style.opacity = 0;
-    }
+    card.style.transform = `translateX(${dx}px) rotate(${dx * 0.08}deg)`;
+    const likeS = card.querySelector('.swipe-stamp.like');
+    const nopeS = card.querySelector('.swipe-stamp.nope');
+    if (dx > 50) { likeS.style.opacity = Math.min((dx - 50) / 80, 1); nopeS.style.opacity = 0; }
+    else if (dx < -50) { nopeS.style.opacity = Math.min((-dx - 50) / 80, 1); likeS.style.opacity = 0; }
+    else { likeS.style.opacity = 0; nopeS.style.opacity = 0; }
   };
-
   const onEnd = () => {
     if (!dragging) return;
     dragging = false;
     card.classList.remove('dragging');
     const dx = currentX - startX;
-    if (dx > 100) {
-      swipeDecide('right');
-    } else if (dx < -100) {
-      swipeDecide('left');
-    } else {
+    if (dx > 100) swipeDecide('right');
+    else if (dx < -100) swipeDecide('left');
+    else {
       card.style.transform = '';
       card.querySelector('.swipe-stamp.like').style.opacity = 0;
       card.querySelector('.swipe-stamp.nope').style.opacity = 0;
     }
   };
 
-  // Mouse
   card.addEventListener('mousedown', (e) => { e.preventDefault(); onStart(e.clientX); });
   document.addEventListener('mousemove', (e) => onMove(e.clientX));
   document.addEventListener('mouseup', onEnd);
-
-  // Touch
   card.addEventListener('touchstart', (e) => onStart(e.touches[0].clientX), { passive: true });
   card.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX), { passive: true });
   card.addEventListener('touchend', onEnd);
@@ -1172,15 +1079,10 @@ function shuffleArray(arr) {
   }
   return arr;
 }
-
 function escHtml(str) {
   const d = document.createElement('div');
   d.textContent = str;
   return d.innerHTML;
-}
-
-function escAttr(str) {
-  return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
 }
 </script>
 </body>
