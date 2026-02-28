@@ -3575,28 +3575,31 @@
     "type": "Rap Battle",
     "description": "Me and my partner recorded a rap battle between a carbohydrate and a protein where they diss each other to prove who is the best macromolecule.",
     "url": "",
-    "embed_url": "",
+    "embed_url": "https://drive.google.com/file/d/1QYIH2mpLvLTbIubBziEqOBBOcfJCRs6c/preview",
     "thumbnail_url": "",
     "ai_tools": "ChatGPT / Claude",
-    "has_partner": true
+    "has_partner": true,
+    "title": "Carbs vs Protein: The Diss Track"
   },
   {
     "type": "Rap Battle",
     "description": "My partner and I created a carbohydrate vs protein rap battle where they diss each other and try and prove why one is better than the other.",
     "url": "",
-    "embed_url": "",
+    "embed_url": "https://drive.google.com/file/d/1QYIH2mpLvLTbIubBziEqOBBOcfJCRs6c/preview",
     "thumbnail_url": "",
     "ai_tools": "ChatGPT / Claude",
-    "has_partner": true
+    "has_partner": true,
+    "title": "Carbs vs Protein: The Diss Track"
   },
   {
     "type": "Rap Battle",
     "description": "This is a rap battle between the heavyweight integral proteins and the small but shifty peripheral proteins about why they are the best type of membrane protein and why the other one is the worst.",
     "url": "",
-    "embed_url": "",
+    "embed_url": "https://drive.google.com/file/d/1b1_aY-nMdEtv2p15vi5l8DxfYG7WJojx/preview",
     "thumbnail_url": "",
     "ai_tools": "Suno / Udio, ChatGPT / Claude",
-    "has_partner": false
+    "has_partner": false,
+    "title": "Integral vs Peripheral Proteins"
   },
   {
     "type": "TikTok-Style Video",
