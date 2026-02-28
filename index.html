@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIOL 3030 Meme Gallery — Spring 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0f0f1a;
+      --card-bg: #1a1a2e;
+      --card-hover: #222240;
+      --accent: #e94560;
+      --accent2: #0f3460;
+      --accent3: #533483;
+      --text: #eee;
+      --text-dim: #999;
+      --border: #2a2a4a;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ---- HEADER ---- */
+    header {
+      text-align: center;
+      padding: 3rem 1.5rem 2rem;
+      background: linear-gradient(135deg, var(--accent2) 0%, var(--accent3) 50%, var(--accent) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -1px;
+      position: relative;
+    }
+    header p {
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+      opacity: 0.85;
+      position: relative;
+    }
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      position: relative;
+      flex-wrap: wrap;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.7;
+    }
+
+    /* ---- FILTERS ---- */
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1.5rem 1rem;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+    .filter-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .filter-btn .count {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      margin-left: 4px;
+    }
+
+    /* ---- SEARCH ---- */
+    .search-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 0 1rem 1rem;
+      background: var(--bg);
+    }
+    .search-wrap input {
+      width: 100%;
+      max-width: 500px;
+      padding: 0.6rem 1rem;
+      border-radius: 2rem;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-wrap input:focus {
+      border-color: var(--accent);
+    }
+    .search-wrap input::placeholder {
+      color: var(--text-dim);
+    }
+
+    /* ---- GRID ---- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      padding: 1.5rem;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* ---- CARD ---- */
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 30px rgba(233, 69, 96, 0.15);
+    }
+    .card-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: #111;
+      display: block;
+    }
+    .card-img-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, var(--accent2), var(--accent3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    .card-body {
+      padding: 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-type {
+      display: inline-block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .card-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .card-partner {
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .card-footer {
+      padding: 0.6rem 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .ai-tag {
+      background: var(--accent2);
+      padding: 2px 8px;
+      border-radius: 1rem;
+      font-size: 0.7rem;
+    }
+
+    /* ---- MODAL ---- */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal {
+      background: var(--card-bg);
+      border-radius: 16px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+    }
+    .modal-media {
+      width: 100%;
+      max-height: 60vh;
+      object-fit: contain;
+      background: #111;
+      display: block;
+      border-radius: 16px 16px 0 0;
+    }
+    .modal-iframe {
+      width: 100%;
+      height: 60vh;
+      border: none;
+      border-radius: 16px 16px 0 0;
+      background: #111;
+    }
+    .modal-body {
+      padding: 1.5rem;
+    }
+    .modal-type {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .modal-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0.3rem 0;
+    }
+    .modal-partner {
+      font-size: 0.9rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .modal-desc {
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .modal-meta {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      cursor: pointer;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-link {
+      display: inline-block;
+      margin-top: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .modal-link:hover { text-decoration: underline; }
+
+    /* ---- EMPTY STATE ---- */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-dim);
+    }
+
+    /* ---- SHUFFLE BTN ---- */
+    .shuffle-btn {
+      background: var(--accent3);
+      color: white;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.2s;
+    }
+    .shuffle-btn:hover { background: var(--accent); }
+
+    /* ---- FOOTER ---- */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>BIOL 3030 Meme Gallery</h1>
+  <p>Biochemistry Extra Credit Creations &mdash; Spring 2026</p>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num" id="total-count">0</div>
+      <div class="stat-label">Submissions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="type-count">0</div>
+      <div class="stat-label">Categories</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="creator-count">0</div>
+      <div class="stat-label">Creators</div>
+    </div>
+  </div>
+</header>
+
+<div class="filters" id="filters"></div>
+
+<div class="search-wrap">
+  <input type="text" id="search" placeholder="Search by name, concept, or description...">
+</div>
+
+<div class="grid" id="grid"></div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <button class="modal-close" id="modal-close">&times;</button>
+  <div class="modal" id="modal"></div>
+</div>
+
+<footer>
+  <p>BIOL 3030 &mdash; Biochemistry &mdash; University of Virginia &mdash; Spring 2026</p>
+</footer>
+
+<script>
+const TYPE_ICONS = {
+  'Meme (image)': '🧬',
+  'Dating Profile for a Molecule': '💕',
+  'AI-Generated Song': '🎵',
+  'TikTok-Style Video': '🎬',
+  'Comic Strip': '📰',
+  'Rap Battle': '🎤',
+  'Other': '✨',
+  'Animated Short': '🎞️',
+  'Parody Commercial': '📺',
+  'Fake Podcast Episode': '🎙️',
+};
+
+let allData = [];
+let activeFilter = 'All';
+let searchQuery = '';
+
+fetch('submissions.json')
+  .then(r => r.json())
+  .then(data => {
+    allData = data;
+    init();
+  });
+
+function init() {
+  // Stats
+  document.getElementById('total-count').textContent = allData.length;
+  const types = [...new Set(allData.map(d => d.type))];
+  document.getElementById('type-count').textContent = types.length;
+  const creators = new Set();
+  allData.forEach(d => {
+    creators.add(d.name);
+    if (d.partner) creators.add(d.partner);
+  });
+  document.getElementById('creator-count').textContent = creators.size;
+
+  // Build filters
+  const filterContainer = document.getElementById('filters');
+  const typeCounts = {};
+  allData.forEach(d => { typeCounts[d.type] = (typeCounts[d.type] || 0) + 1; });
+
+  const allBtn = makeFilterBtn('All', allData.length);
+  allBtn.classList.add('active');
+  filterContainer.appendChild(allBtn);
+
+  // Sort types by count
+  const sortedTypes = Object.entries(typeCounts).sort((a,b) => b[1] - a[1]);
+  sortedTypes.forEach(([type, count]) => {
+    filterContainer.appendChild(makeFilterBtn(type, count));
+  });
+
+  // Shuffle button
+  const shuffleBtn = document.createElement('button');
+  shuffleBtn.className = 'shuffle-btn';
+  shuffleBtn.textContent = 'Shuffle';
+  shuffleBtn.onclick = () => {
+    allData = shuffleArray([...allData]);
+    render();
+  };
+  filterContainer.appendChild(shuffleBtn);
+
+  // Search
+  document.getElementById('search').addEventListener('input', (e) => {
+    searchQuery = e.target.value.toLowerCase();
+    render();
+  });
+
+  // Modal close
+  document.getElementById('modal-overlay').onclick = (e) => {
+    if (e.target === e.currentTarget || e.target === document.getElementById('modal-close')) {
+      closeModal();
+    }
+  };
+  document.getElementById('modal-close').onclick = closeModal;
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  // Shuffle initial order for fun
+  allData = shuffleArray([...allData]);
+  render();
+}
+
+function makeFilterBtn(label, count) {
+  const btn = document.createElement('button');
+  btn.className = 'filter-btn';
+  const icon = TYPE_ICONS[label] || '';
+  btn.innerHTML = `${icon ? icon + ' ' : ''}${label === 'All' ? 'All' : label}<span class="count">(${count})</span>`;
+  btn.onclick = () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = label;
+    render();
+  };
+  return btn;
+}
+
+function render() {
+  const grid = document.getElementById('grid');
+  let filtered = allData;
+
+  if (activeFilter !== 'All') {
+    filtered = filtered.filter(d => d.type === activeFilter);
+  }
+  if (searchQuery) {
+    filtered = filtered.filter(d =>
+      d.name.toLowerCase().includes(searchQuery) ||
+      d.description.toLowerCase().includes(searchQuery) ||
+      d.type.toLowerCase().includes(searchQuery) ||
+      (d.partner && d.partner.toLowerCase().includes(searchQuery))
+    );
+  }
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><p>No submissions match your search.</p></div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map((d, i) => {
+    const icon = TYPE_ICONS[d.type] || '✨';
+    const imgHtml = d.thumbnail_url
+      ? `<img class="card-img" src="${d.thumbnail_url}" alt="${escHtml(d.name)}'s submission" loading="lazy" onerror="this.outerHTML='<div class=\\'card-img-placeholder\\'>${icon}</div>'">`
+      : `<div class="card-img-placeholder">${icon}</div>`;
+
+    const partnerHtml = d.partner ? `<div class="card-partner">with ${escHtml(d.partner)}</div>` : '';
+
+    return `
+      <div class="card" onclick="openModal(${i}, '${activeFilter}', '${escAttr(searchQuery)}')">
+        ${imgHtml}
+        <div class="card-body">
+          <div class="card-type">${icon} ${escHtml(d.type)}</div>
+          <div class="card-name">${escHtml(d.name)}</div>
+          ${partnerHtml}
+          <div class="card-desc">${escHtml(d.description)}</div>
+        </div>
+        <div class="card-footer">
+          ${d.ai_tools ? `<span class="ai-tag">${escHtml(d.ai_tools)}</span>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openModal(index, filter, search) {
+  let filtered = allData;
+  if (filter !== 'All') filtered = filtered.filter(d => d.type === filter);
+  if (search) filtered = filtered.filter(d =>
+    d.name.toLowerCase().includes(search) ||
+    d.description.toLowerCase().includes(search) ||
+    d.type.toLowerCase().includes(search)
+  );
+
+  const d = filtered[index];
+  if (!d) return;
+
+  const icon = TYPE_ICONS[d.type] || '✨';
+  const modal = document.getElementById('modal');
+
+  let mediaHtml = '';
+  if (d.embed_url) {
+    mediaHtml = `<iframe class="modal-iframe" src="${d.embed_url}" allowfullscreen></iframe>`;
+  } else if (d.thumbnail_url) {
+    mediaHtml = `<img class="modal-media" src="${d.thumbnail_url}" alt="${escHtml(d.name)}">`;
+  }
+
+  const linkHtml = d.url && d.url !== 'n/a' && d.url !== 'N/A' && d.url !== 'none' && !d.url.startsWith('file://')
+    ? `<a class="modal-link" href="${escHtml(d.url)}" target="_blank" rel="noopener">Open original &rarr;</a>`
+    : '';
+
+  modal.innerHTML = `
+    ${mediaHtml}
+    <div class="modal-body">
+      <div class="modal-type">${icon} ${escHtml(d.type)}</div>
+      <div class="modal-name">${escHtml(d.name)}</div>
+      ${d.partner ? `<div class="modal-partner">with ${escHtml(d.partner)}</div>` : ''}
+      <div class="modal-desc">${escHtml(d.description)}</div>
+      <div class="modal-meta">AI tools: ${escHtml(d.ai_tools || 'None')}</div>
+      ${linkHtml}
+    </div>
+  `;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  // Remove any iframes to stop video/audio
+  document.getElementById('modal').innerHTML = '';
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function escHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function escAttr(str) {
+  return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+}
+</script>
+</body>
+</html>
